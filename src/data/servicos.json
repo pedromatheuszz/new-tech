@@ -1,0 +1,67 @@
+{
+  "$instrucoes": "Serviços exibidos na seção \"Como podemos ajudar seu negócio\". O campo \"formulario\" liga o botão \"Tenho interesse\" à opção do formulário de contato (software, sites, videos ou outro). \"icone\" usa os nomes de src/icons/icones.ts.",
+  "servicos": [
+    {
+      "id": "software",
+      "numero": "01",
+      "categoria": "Engenharia de software e aplicativos",
+      "titulo": "Desenvolvimento de Softwares e Aplicativos",
+      "descricao": "Transformamos ideias em sistemas e aplicativos funcionais, desenvolvidos para atender às necessidades específicas de cada projeto.",
+      "icone": "code-xml",
+      "destaque": true,
+      "selo": "Especialidade",
+      "solucoes": [
+        "Desenvolvimento de aplicativos",
+        "Sistemas personalizados",
+        "Plataformas digitais",
+        "Desenvolvimento de funcionalidades específicas",
+        "Integrações e soluções automatizadas"
+      ],
+      "formulario": "software"
+    },
+    {
+      "id": "sites",
+      "numero": "02",
+      "categoria": "Web design e desenvolvimento de sites",
+      "titulo": "Sites Profissionais e Desenvolvimento Web",
+      "descricao": "Criamos sites modernos, responsivos e funcionais para fortalecer a presença digital da sua empresa e proporcionar uma experiência profissional aos seus visitantes.",
+      "icone": "globe",
+      "destaque": false,
+      "solucoes": [
+        "Sites institucionais",
+        "Landing pages",
+        "Sites comerciais",
+        "Páginas de divulgação",
+        "Interfaces personalizadas",
+        "Desenvolvimento de soluções web"
+      ],
+      "diferenciaisTitulo": "Projetos pensados para",
+      "diferenciais": [
+        { "icone": "zap", "texto": "Performance" },
+        { "icone": "mouse-pointer-click", "texto": "Experiência do usuário" },
+        { "icone": "monitor-smartphone", "texto": "Responsividade" },
+        { "icone": "palette", "texto": "Apresentação profissional da marca" }
+      ],
+      "formulario": "sites"
+    },
+    {
+      "id": "videos",
+      "numero": "03",
+      "categoria": "Edição profissional de vídeos",
+      "titulo": "Produção e Edição de Vídeos",
+      "descricao": "Transformamos gravações e ideias em conteúdos audiovisuais profissionais, com edições criativas e adequadas aos objetivos de cada projeto.",
+      "icone": "clapperboard",
+      "destaque": false,
+      "solucoes": [
+        "Vídeos curtos para redes sociais",
+        "Reels e TikToks",
+        "Vídeos institucionais",
+        "Vídeos comerciais e publicitários",
+        "Vídeos de média e longa duração",
+        "Edição de conteúdos para empresas e criadores"
+      ],
+      "nota": "Conteúdos audiovisuais de qualidade fortalecem a comunicação e a presença digital da sua marca.",
+      "formulario": "videos"
+    }
+  ]
+}

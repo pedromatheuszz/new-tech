@@ -1,0 +1,16 @@
+---
+/** Confirmação exibida após o envio do formulário quando o JavaScript está desativado. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icone from '../components/Icone.astro';
+import PaginaAviso from '../components/PaginaAviso.astro';
+---
+
+<BaseLayout titulo="Mensagem enviada | New Tech" semIndice>
+  <PaginaAviso icone="circle-check" tom="sucesso" sobrelinha="Contato" titulo="Mensagem enviada com sucesso!">
+    <p>Obrigado! Recebemos sua mensagem e nossa equipe entrará em contato em breve pelo e-mail ou telefone informado.</p>
+    <Fragment slot="acoes">
+      <a href="/" class="btn btn-primario">Voltar ao site <Icone nome="arrow-right" tamanho={18} class="icone--seta" /></a>
+      <a href="/#servicos" class="btn btn-secundario">Conheça nossos serviços</a>
+    </Fragment>
+  </PaginaAviso>
+</BaseLayout>

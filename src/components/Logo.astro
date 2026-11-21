@@ -1,0 +1,38 @@
+---
+/**
+ * Logotipo oficial da New Tech (gerado por `npm run gerar:marca` a partir de "Logotipo New Tech.png").
+ * As imagens são otimizadas no build (WebP, 1x e 2x) e mantêm a proporção original.
+ */
+import { Image } from 'astro:assets';
+import horizontal from '../assets/marca/logo-horizontal.png';
+import vertical from '../assets/marca/logo-vertical.png';
+import simbolo from '../assets/marca/simbolo.png';
+
+interface Props {
+  variante?: 'horizontal' | 'vertical' | 'simbolo';
+  /** Altura exibida em pixels (a largura é calculada pela proporção). */
+  altura?: number;
+  class?: string;
+  prioritario?: boolean;
+  alt?: string;
+}
+
+const { variante = 'horizontal', altura = 36, class: classe, prioritario = false, alt = 'New Tech' } = Astro.props;
+const fontes = { horizontal, vertical, simbolo };
+const fonte = fontes[variante];
+const largura = Math.round((fonte.width / fonte.height) * altura);
+---
+
+<Image
+  src={fonte}
+  alt={alt}
+  width={largura}
+  height={altura}
+  densities={[1, 2]}
+  format="webp"
+  quality={90}
+  loading={prioritario ? 'eager' : 'lazy'}
+  fetchpriority={prioritario ? 'high' : undefined}
+  decoding="async"
+  class:list={['logo', classe]}
+/>

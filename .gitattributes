@@ -1,0 +1,9 @@
+# Mantém finais de linha LF em qualquer sistema (Windows local e Linux da Vercel)
+* text=auto eol=lf
+
+# Arquivos binários
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.woff2 binary

@@ -1,0 +1,32 @@
+{
+  "name": "new-tech-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Site institucional da New Tech — tecnologia e inovação.",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/verificar-conteudo.mjs && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "verificar": "node scripts/verificar-conteudo.mjs --estrito",
+    "gerar:marca": "node scripts/gerar-marca.mjs",
+    "smtp:local": "node scripts/smtp-local.mjs"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^11.0.22",
+    "astro": "^7.4.13",
+    "nodemailer": "^10.6.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^24.19.2",
+    "sharp": "^0.35.5",
+    "smtp-server": "^3.21.7",
+    "typescript": "^6.0.3"
+  }
+}

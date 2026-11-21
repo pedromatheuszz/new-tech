@@ -1,0 +1,739 @@
+---
+import Icone from '../Icone.astro';
+import { LIMITES, SERVICOS } from '../../lib/contato/campos.js';
+import { emailComercial, instagram, redesConfiguradas, whatsapp } from '../../lib/site';
+
+const zap = whatsapp();
+const email = emailComercial();
+const insta = instagram();
+const outrasRedes = redesConfiguradas().filter((rede) => rede.id !== 'instagram');
+
+const canais = [
+  {
+    titulo: 'WhatsApp',
+    icone: 'marca-whatsapp',
+    valor: zap?.numeroFormatado,
+    url: zap?.url,
+    externo: true,
+  },
+  { titulo: 'E-mail comercial', icone: 'mail', valor: email ?? undefined, url: email ? `mailto:${email}` : undefined },
+  { titulo: 'Instagram', icone: 'marca-instagram', valor: insta?.usuario, url: insta?.url, externo: true },
+] as const;
+---
+
+<section id="contato" class="secao contato" aria-labelledby="contato-titulo">
+  <div class="contato__luz" aria-hidden="true"></div>
+  <div class="container contato__grade">
+    <div class="contato__info">
+      <header class="secao-cabecalho contato__cabecalho">
+        <p class="sobrelinha" data-revelar>Contato</p>
+        <h2 id="contato-titulo" class="titulo-secao" data-revelar style="--atraso:1">
+          Vamos tirar seu próximo projeto <span class="texto-gradiente">do papel?</span>
+        </h2>
+        <p class="subtitulo-secao" data-revelar style="--atraso:2">
+          Conte um pouco sobre sua ideia. Nossa equipe está pronta para entender sua necessidade e conversar sobre a
+          melhor solução para o seu negócio.
+        </p>
+      </header>
+
+      <ul class="canais" role="list" aria-label="Canais de atendimento">
+        {
+          canais.map((canal, i) => (
+            <li data-revelar style={`--atraso:${i}`}>
+              {canal.url ? (
+                <a
+                  class="canal canal--ativo"
+                  href={canal.url}
+                  {...('externo' in canal && canal.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  <span class="canal__icone">
+                    <Icone nome={canal.icone} tamanho={20} />
+                  </span>
+                  <span class="canal__textos">
+                    <span class="canal__titulo">{canal.titulo}</span>
+                    <span class="canal__valor">{canal.valor}</span>
+                  </span>
+                  <Icone nome="arrow-up-right" tamanho={18} class="canal__seta" />
+                </a>
+              ) : (
+                <div class="canal">
+                  <span class="canal__icone">
+                    <Icone nome={canal.icone} tamanho={20} />
+                  </span>
+                  <span class="canal__textos">
+                    <span class="canal__titulo">{canal.titulo}</span>
+                    <span class="canal__valor canal__valor--em-breve">Em breve</span>
+                  </span>
+                </div>
+              )}
+            </li>
+          ))
+        }
+        <li data-revelar style="--atraso:3">
+          <div class="canal">
+            <span class="canal__icone">
+              <Icone nome="share-2" tamanho={20} />
+            </span>
+            <span class="canal__textos">
+              <span class="canal__titulo">Outras redes sociais</span>
+              {
+                outrasRedes.length > 0 ? (
+                  <span class="canal__redes">
+                    {outrasRedes.map((rede) => (
+                      <a href={rede.url} target="_blank" rel="noopener noreferrer" aria-label={`${rede.nome} (abre em nova aba)`}>
+                        <Icone nome={rede.icone} tamanho={18} />
+                      </a>
+                    ))}
+                  </span>
+                ) : (
+                  <span class="canal__valor canal__valor--em-breve">Em breve</span>
+                )
+              }
+            </span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="contato__privacidade" data-revelar>
+        <Icone nome="shield-check" tamanho={18} />
+        <span>
+          Seus dados são usados apenas para responder ao seu contato. Saiba mais na nossa{' '}
+          <a href="/politica-de-privacidade/">Política de Privacidade</a>.
+        </span>
+      </p>
+    </div>
+
+    <div class="contato__area card" data-area-formulario data-revelar>
+      <form
+        class="formulario"
+        action="/api/contato"
+        method="post"
+        data-formulario-contato
+        aria-describedby="formulario-instrucoes"
+      >
+        <p id="formulario-instrucoes" class="formulario__instrucoes">
+          Campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.
+        </p>
+
+        <div class="formulario__grade">
+          <div class="campo">
+            <label for="nome">Nome completo <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input
+              id="nome"
+              name="nome"
+              type="text"
+              autocomplete="name"
+              required
+              minlength={LIMITES.nome.min}
+              maxlength={LIMITES.nome.max}
+              aria-describedby="erro-nome"
+              placeholder="Seu nome"
+            />
+            <p class="campo__erro" id="erro-nome" data-erro="nome" aria-live="polite"></p>
+          </div>
+
+          <div class="campo">
+            <label for="empresa">Nome da empresa <span class="opcional">(opcional)</span></label>
+            <input
+              id="empresa"
+              name="empresa"
+              type="text"
+              autocomplete="organization"
+              maxlength={LIMITES.empresa.max}
+              aria-describedby="erro-empresa"
+              placeholder="Sua empresa ou marca"
+            />
+            <p class="campo__erro" id="erro-empresa" data-erro="empresa" aria-live="polite"></p>
+          </div>
+
+          <div class="campo">
+            <label for="email">E-mail <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              required
+              maxlength={LIMITES.email.max}
+              aria-describedby="erro-email"
+              placeholder="nome@empresa.com.br"
+            />
+            <p class="campo__erro" id="erro-email" data-erro="email" aria-live="polite"></p>
+          </div>
+
+          <div class="campo">
+            <label for="telefone">Telefone ou WhatsApp <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input
+              id="telefone"
+              name="telefone"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              required
+              maxlength={LIMITES.telefone.max}
+              aria-describedby="erro-telefone"
+              placeholder="(00) 00000-0000"
+            />
+            <p class="campo__erro" id="erro-telefone" data-erro="telefone" aria-live="polite"></p>
+          </div>
+
+          <div class="campo campo--inteiro">
+            <label for="servico">Serviço de interesse <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <div class="campo__select">
+              <select id="servico" name="servico" required aria-describedby="erro-servico">
+                <option value="" selected disabled>Selecione uma opção</option>
+                {SERVICOS.map((servico) => <option value={servico.valor}>{servico.rotulo}</option>)}
+              </select>
+              <Icone nome="chevron-down" tamanho={18} class="campo__seta" />
+            </div>
+            <p class="campo__erro" id="erro-servico" data-erro="servico" aria-live="polite"></p>
+          </div>
+
+          <div class="campo campo--inteiro">
+            <div class="campo__rotulo-linha">
+              <label for="mensagem">
+                Descrição do projeto ou mensagem <span class="obrigatorio" aria-hidden="true">*</span>
+              </label>
+              <span class="campo__contador" data-contador-mensagem aria-hidden="true"></span>
+            </div>
+            <textarea
+              id="mensagem"
+              name="mensagem"
+              rows="5"
+              required
+              minlength={LIMITES.mensagem.min}
+              maxlength={LIMITES.mensagem.max}
+              aria-describedby="erro-mensagem"
+              placeholder="Conte sobre sua ideia, objetivos e prazos desejados."></textarea>
+            <p class="campo__erro" id="erro-mensagem" data-erro="mensagem" aria-live="polite"></p>
+          </div>
+
+          <div class="campo campo--inteiro campo--checkbox">
+            <div class="campo__checkbox">
+              <input
+                id="consentimento"
+                name="consentimento"
+                type="checkbox"
+                value="sim"
+                required
+                aria-describedby="erro-consentimento"
+              />
+              <label for="consentimento">
+                Li e concordo com a <a href="/politica-de-privacidade/" target="_blank" rel="noopener"
+                  >Política de Privacidade<span class="sr-only"> (abre em nova aba)</span></a
+                > e
+                autorizo o uso dos meus dados para o retorno deste contato.
+                <span class="obrigatorio" aria-hidden="true">*</span>
+              </label>
+            </div>
+            <p class="campo__erro" id="erro-consentimento" data-erro="consentimento" aria-live="polite"></p>
+          </div>
+
+          <!-- Campo-armadilha contra robôs: invisível e ignorado por pessoas -->
+          <div class="campo-armadilha" aria-hidden="true">
+            <label for="website">Não preencha este campo</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="formulario__alerta" role="alert" data-alerta hidden>
+          <Icone nome="circle-alert" tamanho={20} />
+          <p data-alerta-texto></p>
+        </div>
+
+        <button type="submit" class="btn btn-primario btn-lg formulario__enviar" data-enviar>
+          <span class="formulario__spinner" aria-hidden="true"></span>
+          <span data-rotulo>Enviar mensagem</span>
+          <Icone nome="send" tamanho={18} class="formulario__icone-enviar" />
+        </button>
+      </form>
+
+      <div class="sucesso" data-sucesso hidden>
+        <span class="sucesso__icone">
+          <Icone nome="circle-check" tamanho={34} />
+        </span>
+        <h3 class="sucesso__titulo" tabindex="-1" data-sucesso-titulo>Mensagem enviada com sucesso!</h3>
+        <p>
+          Obrigado<span class="sucesso__nome-wrap">, <span data-sucesso-nome></span></span>! Recebemos sua mensagem e nossa
+          equipe entrará em contato em breve pelo e-mail ou telefone informado.
+        </p>
+        <button type="button" class="btn btn-secundario" data-nova-mensagem>
+          <Icone nome="send" tamanho={16} /> Enviar nova mensagem
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/formulario';
+</script>
+
+<style>
+  .contato {
+    overflow: clip;
+  }
+
+  .contato__luz {
+    position: absolute;
+    right: -15%;
+    bottom: -10%;
+    width: min(900px, 120vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(1 55 234 / 0.22), transparent 62%);
+    pointer-events: none;
+  }
+
+  .contato__grade {
+    position: relative;
+    display: grid;
+    gap: clamp(40px, 6vw, 72px);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .contato__grade {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .contato__info {
+      position: sticky;
+      top: calc(var(--altura-cabecalho) + 32px);
+    }
+  }
+
+  .contato__cabecalho {
+    margin-bottom: 36px;
+  }
+
+  /* ---------- Canais ---------- */
+  .canais {
+    display: grid;
+    gap: 12px;
+  }
+
+  @media (min-width: 560px) and (max-width: 1023.98px) {
+    .canais {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .canal {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 76px;
+    padding: 14px 18px;
+    border-radius: var(--raio);
+    border: 1px solid var(--borda);
+    background: rgb(255 255 255 / 0.025);
+    transition:
+      border-color 0.3s,
+      background-color 0.3s,
+      transform 0.35s var(--ease-saida);
+  }
+
+  .canal--ativo:hover {
+    border-color: rgb(5 189 253 / 0.4);
+    background: rgb(1 138 252 / 0.07);
+    transform: translateY(-2px);
+  }
+
+  .canal__icone {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    color: var(--marca-ciano);
+    background: rgb(1 138 252 / 0.1);
+    box-shadow: inset 0 0 0 1px rgb(5 189 253 / 0.22);
+  }
+
+  .canal__textos {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .canal__titulo {
+    font-size: 0.8125rem;
+    color: var(--texto-3);
+  }
+
+  .canal__valor {
+    font-weight: 600;
+    color: var(--texto);
+    overflow-wrap: anywhere;
+  }
+
+  .canal__valor--em-breve {
+    font-weight: 500;
+    color: var(--texto-2);
+  }
+
+  .canal :global(.canal__seta) {
+    margin-left: auto;
+    flex: none;
+    color: var(--texto-3);
+    transition:
+      transform 0.3s var(--ease-saida),
+      color 0.3s;
+  }
+
+  .canal--ativo:hover :global(.canal__seta) {
+    color: var(--marca-ciano);
+    transform: translate(2px, -2px);
+  }
+
+  .canal__redes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .canal__redes a {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--borda-forte);
+    transition:
+      border-color 0.25s,
+      color 0.25s;
+  }
+
+  .canal__redes a:hover {
+    border-color: rgb(5 189 253 / 0.6);
+    color: var(--marca-ciano);
+  }
+
+  .contato__privacidade {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--texto-3);
+  }
+
+  .contato__privacidade :global(.icone) {
+    flex: none;
+    color: var(--marca-ciano);
+  }
+
+  .contato__privacidade a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ---------- Formulário ---------- */
+  .contato__area {
+    padding: clamp(22px, 3.6vw, 44px);
+    background:
+      linear-gradient(180deg, rgb(12 17 30 / 0.92), rgb(6 9 16 / 0.92)) padding-box,
+      linear-gradient(160deg, rgb(5 189 253 / 0.45), rgb(255 255 255 / 0.06) 40%, rgb(1 55 234 / 0.35)) border-box;
+    border-color: transparent;
+    box-shadow:
+      0 40px 100px -50px rgb(1 138 252 / 0.55),
+      var(--sombra-card);
+  }
+
+  .formulario__instrucoes {
+    margin-bottom: 22px;
+    font-size: 0.8125rem;
+    color: var(--texto-3);
+  }
+
+  .formulario__grade {
+    display: grid;
+    gap: 6px 18px;
+  }
+
+  @media (min-width: 640px) {
+    .formulario__grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .campo--inteiro {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .campo {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+  }
+
+  .campo label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--texto);
+  }
+
+  .obrigatorio {
+    color: var(--marca-ciano);
+  }
+
+  .opcional {
+    font-weight: 400;
+    color: var(--texto-3);
+  }
+
+  .campo input:not([type='checkbox']),
+  .campo select,
+  .campo textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 16px;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    border-radius: 12px;
+    background: rgb(3 5 10 / 0.75);
+    color: var(--texto);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      background-color 0.2s;
+  }
+
+  .campo textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .campo input::placeholder,
+  .campo textarea::placeholder {
+    color: #737d92;
+  }
+
+  .campo input:not([type='checkbox']):hover,
+  .campo select:hover,
+  .campo textarea:hover {
+    border-color: rgb(255 255 255 / 0.22);
+  }
+
+  .campo input:not([type='checkbox']):focus,
+  .campo select:focus,
+  .campo textarea:focus {
+    outline: none;
+    border-color: var(--marca-azul);
+    background: rgb(3 5 10 / 0.95);
+    box-shadow:
+      0 0 0 4px rgb(1 138 252 / 0.2),
+      0 0 24px -6px rgb(1 138 252 / 0.6);
+  }
+
+  .campo--erro input:not([type='checkbox']),
+  .campo--erro select,
+  .campo--erro textarea {
+    border-color: rgb(255 122 122 / 0.75);
+  }
+
+  .campo--erro input:not([type='checkbox']):focus,
+  .campo--erro select:focus,
+  .campo--erro textarea:focus {
+    box-shadow: 0 0 0 4px rgb(255 122 122 / 0.16);
+  }
+
+  .campo__erro {
+    min-height: 1.35em;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--erro);
+  }
+
+  .campo__select {
+    position: relative;
+  }
+
+  .campo__select select {
+    appearance: none;
+    padding-right: 44px;
+    cursor: pointer;
+  }
+
+  .campo__select select:invalid {
+    color: #737d92;
+  }
+
+  .campo__select option {
+    background: #0b0f1a;
+    color: var(--texto);
+  }
+
+  .campo__select :global(.campo__seta) {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    translate: 0 -50%;
+    color: var(--texto-3);
+    pointer-events: none;
+  }
+
+  :global(.campo--destaque) .campo__select select {
+    animation: destaque 1.4s var(--ease-saida);
+  }
+
+  @keyframes destaque {
+    0%,
+    40% {
+      border-color: var(--marca-ciano);
+      box-shadow: 0 0 0 4px rgb(5 189 253 / 0.25);
+    }
+  }
+
+  .campo__rotulo-linha {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .campo__contador {
+    flex: none;
+    font-family: var(--fonte-codigo);
+    font-size: 0.75rem;
+    color: var(--texto-3);
+  }
+
+  .campo__contador:global(.contador--limite) {
+    color: var(--erro);
+  }
+
+  .campo__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .campo__checkbox input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0;
+    accent-color: var(--marca-azul);
+    cursor: pointer;
+  }
+
+  .campo__checkbox label {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--texto-2);
+    cursor: pointer;
+  }
+
+  .campo__checkbox a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .campo-armadilha {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .formulario__alerta {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0 18px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgb(255 122 122 / 0.35);
+    background: rgb(255 122 122 / 0.08);
+    color: #ffd2d2;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .formulario__alerta :global(.icone) {
+    flex: none;
+    color: var(--erro);
+  }
+
+  .formulario__enviar {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .formulario__spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgb(255 255 255 / 0.35);
+    border-top-color: #fff;
+    animation: girar-spinner 0.8s linear infinite;
+  }
+
+  .formulario__enviar:global(.btn--carregando) .formulario__spinner {
+    display: inline-block;
+  }
+
+  .formulario__enviar:global(.btn--carregando) :global(.formulario__icone-enviar) {
+    display: none;
+  }
+
+  @keyframes girar-spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ---------- Sucesso ---------- */
+  .sucesso {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    padding: clamp(24px, 5vw, 56px) 8px;
+    text-align: center;
+  }
+
+  .sucesso:not([hidden]) {
+    animation: entrar 0.7s var(--ease-saida) both;
+  }
+
+  .sucesso__icone {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    color: var(--sucesso);
+    background: rgb(62 224 161 / 0.1);
+    box-shadow:
+      inset 0 0 0 1px rgb(62 224 161 / 0.35),
+      0 0 40px -6px rgb(62 224 161 / 0.45);
+  }
+
+  .sucesso__titulo {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 1.9rem);
+  }
+
+  .sucesso__titulo:focus {
+    outline: none;
+  }
+
+  .sucesso p {
+    max-width: 440px;
+    color: var(--texto-2);
+  }
+
+  .sucesso__nome-wrap:has([data-sucesso-nome]:empty) {
+    display: none;
+  }
+</style>

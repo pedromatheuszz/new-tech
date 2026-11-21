@@ -1,0 +1,80 @@
+---
+/** Faixa em movimento com as soluções oferecidas (decorativa — o conteúdo está na seção de serviços). */
+import Icone from '../Icone.astro';
+import servicosDados from '../../data/servicos.json';
+
+const itens = servicosDados.servicos.flatMap((servico) => servico.solucoes);
+---
+
+<div class="faixa" aria-hidden="true">
+  <div class="faixa__trilho">
+    {
+      [0, 1].map(() => (
+        <ul class="faixa__lista" role="list">
+          {itens.map((item) => (
+            <li>
+              <Icone nome="sparkles" tamanho={16} />
+              {item}
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .faixa {
+    position: relative;
+    padding-block: 22px;
+    border-block: 1px solid var(--borda);
+    background: linear-gradient(90deg, rgb(1 55 234 / 0.06), rgb(5 189 253 / 0.05), rgb(1 55 234 / 0.06));
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .faixa__trilho {
+    display: flex;
+    width: max-content;
+  }
+
+  .faixa__lista {
+    display: flex;
+    flex: none;
+    gap: 40px;
+    padding-right: 40px;
+  }
+
+  .faixa__lista li {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+    font-weight: 500;
+    color: var(--texto-2);
+    white-space: nowrap;
+  }
+
+  .faixa__lista :global(.icone) {
+    color: var(--marca-ciano);
+    opacity: 0.8;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .faixa__trilho {
+      animation: deslizar 60s linear infinite;
+    }
+
+    .faixa:hover .faixa__trilho {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes deslizar {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

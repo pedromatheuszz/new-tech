@@ -1,0 +1,136 @@
+---
+import '../styles/global.css';
+import BotaoWhatsApp from '../components/BotaoWhatsApp.astro';
+import Cabecalho from '../components/Cabecalho.astro';
+import Rodape from '../components/Rodape.astro';
+import servicosDados from '../data/servicos.json';
+import { dadosSite, emailComercial, redesConfiguradas, telefoneComercial, whatsapp } from '../lib/site';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  /** Impede a indexação (páginas de confirmação, 404...). */
+  semIndice?: boolean;
+}
+
+const { titulo = dadosSite.seo.titulo, descricao = dadosSite.seo.descricao, semIndice = false } = Astro.props;
+
+const base = Astro.site ?? new URL(Astro.url.origin);
+const urlCanonica = new URL(Astro.url.pathname, base).href;
+const imagemCompartilhamento = new URL(dadosSite.seo.imagemCompartilhamento, base).href;
+
+// Dados estruturados (schema.org) — somente informações reais e preenchidas.
+const email = emailComercial();
+const telefone = telefoneComercial();
+const zap = whatsapp();
+const idOrganizacao = new URL('/#organizacao', base).href;
+const dadosEstruturados = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': idOrganizacao,
+      name: dadosSite.nome,
+      legalName: dadosSite.empresa.razaoSocial || undefined,
+      taxID: dadosSite.empresa.cnpj || undefined,
+      url: base.href,
+      logo: new URL('/brand/logo-new-tech.png', base).href,
+      image: imagemCompartilhamento,
+      description: dadosSite.descricaoCurta,
+      email: email ?? undefined,
+      telephone: telefone?.texto ?? zap?.numeroFormatado ?? undefined,
+      sameAs: redesConfiguradas().map((rede) => rede.url),
+      knowsAbout: ['Desenvolvimento de software', 'Desenvolvimento de aplicativos', 'Desenvolvimento de sites', 'Edição de vídeos'],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Serviços da New Tech',
+        itemListElement: servicosDados.servicos.map((servico) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: servico.titulo, description: servico.descricao },
+        })),
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': new URL('/#site', base).href,
+      url: base.href,
+      name: dadosSite.nome,
+      inLanguage: 'pt-BR',
+      publisher: { '@id': idOrganizacao },
+    },
+  ],
+};
+// Evita que "</script>" em algum texto encerre o bloco JSON.
+const jsonLd = JSON.stringify(dadosEstruturados).replace(/</g, '\\u003c');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    <link rel="canonical" href={urlCanonica} />
+    <meta name="robots" content={semIndice ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#040509" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={dadosSite.nome} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={urlCanonica} />
+    <meta property="og:image" content={imagemCompartilhamento} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={dadosSite.seo.textoAlternativoImagem} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descricao} />
+    <meta name="twitter:image" content={imagemCompartilhamento} />
+    <meta name="twitter:image:alt" content={dadosSite.seo.textoAlternativoImagem} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
+    <noscript>
+      <style>
+        [data-revelar] {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+    <Cabecalho />
+    <main id="conteudo" tabindex="-1">
+      <slot />
+    </main>
+    <Rodape />
+    <BotaoWhatsApp />
+
+    <script>
+      import '../scripts/cabecalho';
+      import '../scripts/revelar';
+      import '../scripts/brilho';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  main:focus {
+    outline: none;
+  }
+</style>

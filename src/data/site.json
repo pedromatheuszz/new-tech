@@ -1,0 +1,37 @@
+{
+  "$instrucoes": "Dados gerais da New Tech. Campos vazios (\"\") não geram links: o site mostra \"Em breve\" no lugar. Preencha com dados reais antes de publicar e rode `npm run verificar`.",
+  "nome": "New Tech",
+  "url": "",
+  "descricaoCurta": "Empresa de tecnologia e inovação especializada em desenvolvimento de softwares, aplicativos, sites profissionais e edição de vídeos.",
+  "seo": {
+    "titulo": "New Tech | Software, aplicativos e sites para empresas",
+    "descricao": "A New Tech desenvolve softwares, aplicativos, sites profissionais e vídeos para empresas. Transformamos ideias em soluções digitais. Solicite um orçamento.",
+    "imagemCompartilhamento": "/og-image.png",
+    "textoAlternativoImagem": "New Tech — Transformamos ideias em soluções digitais."
+  },
+  "contato": {
+    "$instrucoes": "whatsapp: somente números com DDI e DDD (ex.: 5511912345678). email: e-mail comercial. telefone: opcional, exibido como texto.",
+    "whatsapp": "",
+    "whatsappMensagem": "Olá! Vim pelo site da New Tech e gostaria de conversar sobre um projeto.",
+    "email": "",
+    "telefone": ""
+  },
+  "redes": {
+    "$instrucoes": "Use o endereço completo do perfil (ex.: https://www.instagram.com/newtech). Deixe vazio o que não existir.",
+    "instagram": "",
+    "linkedin": "",
+    "tiktok": "",
+    "youtube": "",
+    "github": "",
+    "behance": "",
+    "facebook": ""
+  },
+  "empresa": {
+    "$instrucoes": "Identificação legal exibida no rodapé e na Política de Privacidade (opcional, recomendado).",
+    "razaoSocial": "",
+    "cnpj": ""
+  },
+  "privacidade": {
+    "atualizadaEm": "2026-11-21"
+  }
+}

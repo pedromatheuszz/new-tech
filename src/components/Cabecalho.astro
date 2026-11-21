@@ -1,0 +1,366 @@
+---
+import Icone from './Icone.astro';
+import Logo from './Logo.astro';
+
+/** Itens do menu principal — o "id" corresponde ao id de cada seção da página inicial. */
+const itensMenu = [
+  { id: 'inicio', rotulo: 'Início' },
+  { id: 'quem-somos', rotulo: 'Quem somos?' },
+  { id: 'servicos', rotulo: 'Como podemos ajudar seu negócio' },
+  { id: 'clientes', rotulo: 'Alguns clientes' },
+  { id: 'resultados', rotulo: 'Resultados' },
+  { id: 'contato', rotulo: 'Contato' },
+];
+---
+
+<header class="cabecalho" data-cabecalho>
+  <div class="container cabecalho__barra">
+    <a href="/#inicio" class="cabecalho__logo">
+      <Logo variante="horizontal" altura={34} prioritario alt="New Tech — página inicial" />
+    </a>
+
+    <nav class="nav" id="menu-principal" aria-label="Principal" data-menu>
+      <ul class="nav__lista" role="list">
+        {
+          itensMenu.map((item, i) => (
+            <li class="nav__item" style={`--i:${i}`}>
+              <a class="nav__link" href={`/#${item.id}`} data-secao-link={item.id}>
+                <span class="nav__indice" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {item.rotulo}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn-primario btn-lg nav__cta" href="/#contato">
+        Solicite um orçamento
+        <Icone nome="arrow-right" tamanho={18} class="icone--seta" />
+      </a>
+    </nav>
+
+    <div class="cabecalho__acoes">
+      <a class="btn btn-primario btn-sm cabecalho__cta" href="/#contato">Solicite um orçamento</a>
+      <button
+        class="cabecalho__alternar"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        data-menu-botao
+      >
+        <span class="sr-only" data-menu-rotulo>Abrir menu</span>
+        <span class="hamburguer" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .cabecalho {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--altura-cabecalho);
+  }
+
+  /* Fundo de vidro em um pseudo-elemento: evita que o blur crie um novo contexto
+     para o menu mobile (que usa position: fixed). */
+  .cabecalho::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(4 5 9 / 0.72);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border-bottom: 1px solid var(--borda);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-saida);
+  }
+
+  .cabecalho:global(.rolado)::before,
+  .cabecalho:global(.menu-aberto)::before {
+    opacity: 1;
+  }
+
+  .cabecalho__barra {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+  }
+
+  .cabecalho__logo {
+    position: relative;
+    z-index: 2;
+    flex: none;
+    display: block;
+    padding: 6px 0;
+    border-radius: 8px;
+  }
+
+  .cabecalho__logo :global(.logo) {
+    width: auto;
+    height: 34px;
+  }
+
+  .cabecalho__acoes {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+
+  /* ---------- Navegação (desktop) ---------- */
+  .nav {
+    margin-left: auto;
+  }
+
+  .nav__lista {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: var(--texto-2);
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      color 0.25s,
+      background-color 0.25s;
+  }
+
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 1px;
+    width: 18px;
+    height: 2px;
+    margin-left: -9px;
+    border-radius: 2px;
+    background: var(--grad-marca);
+    box-shadow: 0 0 10px rgb(5 189 253 / 0.9);
+    opacity: 0;
+    transform: scaleX(0.3);
+    transition:
+      opacity 0.3s,
+      transform 0.35s var(--ease-saida);
+  }
+
+  .nav__link:hover {
+    color: var(--texto);
+    background: rgb(255 255 255 / 0.05);
+  }
+
+  .nav__link:global(.ativo) {
+    color: var(--texto);
+  }
+
+  .nav__link:global(.ativo)::after {
+    opacity: 1;
+    transform: none;
+  }
+
+  .nav__indice,
+  .nav__cta {
+    display: none;
+  }
+
+  .cabecalho__cta {
+    display: none;
+  }
+
+  .cabecalho__alternar {
+    display: none;
+  }
+
+  @media (min-width: 1120px) {
+    .cabecalho__acoes {
+      margin-left: 4px;
+    }
+  }
+
+  @media (min-width: 1360px) {
+    .cabecalho__cta {
+      display: inline-flex;
+    }
+  }
+
+  /* ---------- Menu mobile ---------- */
+  @media (max-width: 1119.98px) {
+    .cabecalho__alternar {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 1px solid var(--borda-forte);
+      border-radius: 14px;
+      background: rgb(255 255 255 / 0.04);
+      transition:
+        border-color 0.25s,
+        background-color 0.25s;
+    }
+
+    .cabecalho__alternar:hover {
+      border-color: rgb(5 189 253 / 0.5);
+    }
+
+    .hamburguer {
+      position: relative;
+      display: block;
+      width: 20px;
+      height: 14px;
+    }
+
+    .hamburguer span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--texto);
+      transition:
+        transform 0.35s var(--ease-saida),
+        opacity 0.2s,
+        top 0.35s var(--ease-saida);
+    }
+
+    .hamburguer span:nth-child(1) {
+      top: 0;
+    }
+    .hamburguer span:nth-child(2) {
+      top: 6px;
+    }
+    .hamburguer span:nth-child(3) {
+      top: 12px;
+    }
+
+    .cabecalho:global(.menu-aberto) .hamburguer span:nth-child(1) {
+      top: 6px;
+      transform: rotate(45deg);
+    }
+    .cabecalho:global(.menu-aberto) .hamburguer span:nth-child(2) {
+      opacity: 0;
+    }
+    .cabecalho:global(.menu-aberto) .hamburguer span:nth-child(3) {
+      top: 6px;
+      transform: rotate(-45deg);
+    }
+
+    .nav {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin: 0;
+      padding: calc(var(--altura-cabecalho) + 24px) var(--margem-lateral) 32px;
+      overflow-y: auto;
+      background:
+        radial-gradient(120% 60% at 100% 0%, rgb(1 55 234 / 0.28), transparent 60%),
+        radial-gradient(90% 50% at 0% 100%, rgb(5 189 253 / 0.12), transparent 60%),
+        var(--fundo);
+      overscroll-behavior: contain;
+      visibility: hidden;
+      opacity: 0;
+      transition:
+        opacity 0.35s var(--ease-saida),
+        visibility 0s linear 0.35s;
+    }
+
+    .cabecalho:global(.menu-aberto) .nav {
+      visibility: visible;
+      opacity: 1;
+      transition:
+        opacity 0.35s var(--ease-saida),
+        visibility 0s;
+    }
+
+    .nav__lista {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .nav__item {
+      border-bottom: 1px solid var(--borda);
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        opacity 0.4s var(--ease-saida),
+        transform 0.5s var(--ease-saida);
+    }
+
+    .cabecalho:global(.menu-aberto) .nav__item {
+      opacity: 1;
+      transform: none;
+      transition-delay: calc(var(--i) * 45ms + 60ms);
+    }
+
+    .nav__link {
+      display: flex;
+      gap: 16px;
+      padding: 18px 4px;
+      border-radius: 0;
+      font-family: var(--fonte-titulo);
+      font-size: clamp(1.25rem, 1rem + 1.4vw, 1.6rem);
+      font-weight: 500;
+      white-space: normal;
+      color: var(--texto);
+    }
+
+    .nav__link:hover {
+      background: none;
+      color: var(--marca-ciano);
+    }
+
+    .nav__link::after {
+      left: auto;
+      right: 4px;
+      bottom: 50%;
+      width: 8px;
+      height: 8px;
+      margin: 0 0 -4px;
+      border-radius: 999px;
+    }
+
+    .nav__indice {
+      display: inline-block;
+      min-width: 2ch;
+      padding-top: 0.35em;
+      font-family: var(--fonte-codigo);
+      font-size: 0.75rem;
+      color: var(--marca-ciano);
+    }
+
+    .nav__cta {
+      display: inline-flex;
+      align-self: stretch;
+    }
+  }
+
+  @media (max-width: 1119.98px) and (min-width: 560px) {
+    .cabecalho__cta {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .cabecalho__logo :global(.logo) {
+      height: 30px;
+    }
+  }
+</style>

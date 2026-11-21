@@ -1,0 +1,46 @@
+{
+  "$instrucoes": [
+    "Indicadores da seção \"Resultados\". Use SOMENTE números reais da New Tech.",
+    "\"valor\": número (ex.: 120) ou null enquanto o dado não estiver confirmado — null mostra um espaço reservado.",
+    "\"prefixo\"/\"sufixo\": textos ao redor do número (ex.: \"+\" e \"%\"). \"casasDecimais\": opcional (padrão 0).",
+    "Para adicionar ou remover indicadores, inclua ou apague itens da lista."
+  ],
+  "indicadores": [
+    {
+      "id": "projetos",
+      "rotulo": "Projetos realizados",
+      "descricao": "Softwares, aplicativos, sites e vídeos entregues.",
+      "valor": null,
+      "prefixo": "+",
+      "sufixo": "",
+      "icone": "folder-kanban"
+    },
+    {
+      "id": "clientes-atendidos",
+      "rotulo": "Clientes atendidos",
+      "descricao": "Empresas, empreendedores e marcas que contaram com a New Tech.",
+      "valor": null,
+      "prefixo": "+",
+      "sufixo": "",
+      "icone": "users"
+    },
+    {
+      "id": "clientes-satisfeitos",
+      "rotulo": "Clientes satisfeitos",
+      "descricao": "Clientes que aprovaram as soluções entregues.",
+      "valor": null,
+      "prefixo": "",
+      "sufixo": "%",
+      "icone": "heart-handshake"
+    },
+    {
+      "id": "solucoes",
+      "rotulo": "Soluções digitais desenvolvidas",
+      "descricao": "Sistemas, funcionalidades, integrações e páginas criadas.",
+      "valor": null,
+      "prefixo": "+",
+      "sufixo": "",
+      "icone": "blocks"
+    }
+  ]
+}

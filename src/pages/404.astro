@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icone from '../components/Icone.astro';
+import PaginaAviso from '../components/PaginaAviso.astro';
+---
+
+<BaseLayout titulo="Página não encontrada | New Tech" semIndice>
+  <PaginaAviso icone="triangle-alert" sobrelinha="Erro 404" titulo="Página não encontrada">
+    <p>O endereço acessado não existe ou foi alterado. Que tal voltar para o início ou falar com a nossa equipe?</p>
+    <Fragment slot="acoes">
+      <a href="/" class="btn btn-primario">Ir para o início <Icone nome="arrow-right" tamanho={18} class="icone--seta" /></a>
+      <a href="/#contato" class="btn btn-secundario">Fale conosco</a>
+    </Fragment>
+  </PaginaAviso>
+</BaseLayout>

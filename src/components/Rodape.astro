@@ -1,0 +1,308 @@
+---
+import Icone from './Icone.astro';
+import Logo from './Logo.astro';
+import servicosDados from '../data/servicos.json';
+import { anoAtual, dadosSite, emailComercial, instagram, redesConfiguradas, whatsapp } from '../lib/site';
+
+const navegacao = [
+  { href: '/#inicio', rotulo: 'Início' },
+  { href: '/#quem-somos', rotulo: 'Quem somos?' },
+  { href: '/#servicos', rotulo: 'Como podemos ajudar' },
+  { href: '/#clientes', rotulo: 'Alguns clientes' },
+  { href: '/#resultados', rotulo: 'Resultados' },
+  { href: '/#contato', rotulo: 'Contato' },
+];
+
+const redes = redesConfiguradas();
+const email = emailComercial();
+const zap = whatsapp();
+const insta = instagram();
+const { razaoSocial, cnpj } = dadosSite.empresa;
+---
+
+<footer class="rodape">
+  <div class="rodape__linha" aria-hidden="true"></div>
+  <div class="container rodape__grade">
+    <div class="rodape__marca">
+      <a href="/#inicio" class="rodape__logo">
+        <Logo variante="vertical" altura={92} alt="New Tech — voltar ao início" />
+      </a>
+      <p class="rodape__descricao">{dadosSite.descricaoCurta}</p>
+      {
+        redes.length > 0 ? (
+          <ul class="rodape__redes" role="list" aria-label="Redes sociais da New Tech">
+            {redes.map((rede) => (
+              <li>
+                <a href={rede.url} target="_blank" rel="noopener noreferrer" aria-label={`${rede.nome} (abre em nova aba)`}>
+                  <Icone nome={rede.icone} tamanho={18} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="rodape__em-breve">Redes sociais em breve.</p>
+        )
+      }
+    </div>
+
+    <nav class="rodape__coluna" aria-labelledby="rodape-navegacao">
+      <h2 id="rodape-navegacao" class="rodape__titulo">Navegação</h2>
+      <ul role="list">
+        {
+          navegacao.map((item) => (
+            <li>
+              <a href={item.href}>{item.rotulo}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="rodape__coluna">
+      <h2 class="rodape__titulo">Serviços</h2>
+      <ul role="list">
+        {
+          servicosDados.servicos.map((servico) => (
+            <li>
+              <a href={`/#servico-${servico.id}`}>{servico.titulo}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="rodape__coluna">
+      <h2 class="rodape__titulo">Contato</h2>
+      <ul role="list" class="rodape__contatos">
+        <li>
+          <Icone nome="mail" tamanho={16} />
+          {email ? <a href={`mailto:${email}`}>{email}</a> : <span>E-mail comercial em breve</span>}
+        </li>
+        <li>
+          <Icone nome="marca-whatsapp" tamanho={16} />
+          {
+            zap ? (
+              <a href={zap.url} target="_blank" rel="noopener noreferrer">
+                {zap.numeroFormatado}
+              </a>
+            ) : (
+              <span>WhatsApp em breve</span>
+            )
+          }
+        </li>
+        <li>
+          <Icone nome="marca-instagram" tamanho={16} />
+          {
+            insta ? (
+              <a href={insta.url} target="_blank" rel="noopener noreferrer">
+                {insta.usuario}
+              </a>
+            ) : (
+              <span>Instagram em breve</span>
+            )
+          }
+        </li>
+      </ul>
+      <a href="/#contato" class="rodape__orcamento">
+        Solicite um orçamento <Icone nome="arrow-up-right" tamanho={16} />
+      </a>
+    </div>
+  </div>
+
+  <div class="container rodape__base">
+    <p>
+      © {anoAtual} New Tech. Todos os direitos reservados.
+      {razaoSocial && <span class="rodape__legal"> {razaoSocial}{cnpj && ` — CNPJ ${cnpj}`}</span>}
+    </p>
+    <div class="rodape__base-links">
+      <a href="/politica-de-privacidade/">Política de Privacidade</a>
+      <a href="#inicio" class="rodape__topo">
+        Voltar ao topo <Icone nome="arrow-up" tamanho={16} />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    position: relative;
+    padding-top: clamp(64px, 8vw, 96px);
+    background:
+      radial-gradient(60% 50% at 50% 0%, rgb(1 55 234 / 0.12), transparent 70%),
+      #020306;
+    color: var(--texto-2);
+    font-size: 0.9375rem;
+  }
+
+  .rodape__linha {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(5 189 253 / 0.7) 50%, transparent);
+    box-shadow: 0 0 18px rgb(5 189 253 / 0.5);
+  }
+
+  .rodape__grade {
+    display: grid;
+    gap: 40px 32px;
+    grid-template-columns: 1fr;
+    padding-bottom: 48px;
+  }
+
+  @media (min-width: 640px) {
+    .rodape__grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .rodape__marca {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rodape__grade {
+      grid-template-columns: 1.3fr 0.8fr 1.1fr 1.1fr;
+    }
+    .rodape__marca {
+      grid-column: auto;
+    }
+  }
+
+  .rodape__logo {
+    display: inline-block;
+    border-radius: 8px;
+  }
+
+  .rodape__logo :global(.logo) {
+    width: auto;
+    height: 92px;
+  }
+
+  .rodape__descricao {
+    max-width: 340px;
+    margin-top: 20px;
+    line-height: 1.65;
+  }
+
+  .rodape__redes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .rodape__redes a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--borda-forte);
+    color: var(--texto);
+    transition:
+      border-color 0.25s,
+      color 0.25s,
+      transform 0.3s var(--ease-saida);
+  }
+
+  .rodape__redes a:hover {
+    border-color: rgb(5 189 253 / 0.6);
+    color: var(--marca-ciano);
+    transform: translateY(-2px);
+  }
+
+  .rodape__em-breve {
+    margin-top: 18px;
+    font-size: 0.875rem;
+    color: var(--texto-3);
+  }
+
+  .rodape__titulo {
+    margin-bottom: 18px;
+    font-family: var(--fonte-codigo);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--texto);
+  }
+
+  .rodape__coluna ul {
+    display: grid;
+    gap: 12px;
+  }
+
+  .rodape__coluna a {
+    transition: color 0.2s;
+  }
+
+  .rodape__coluna a:hover {
+    color: var(--marca-ciano);
+  }
+
+  .rodape__contatos li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .rodape__contatos :global(.icone) {
+    flex: none;
+    color: var(--marca-ciano);
+  }
+
+  .rodape__contatos span {
+    color: var(--texto-3);
+  }
+
+  .rodape__contatos a {
+    overflow-wrap: anywhere;
+  }
+
+  .rodape__orcamento {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 22px;
+    color: var(--texto);
+    font-weight: 600;
+  }
+
+  .rodape__base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 24px;
+    padding-block: 24px calc(24px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--borda);
+    font-size: 0.875rem;
+    color: var(--texto-3);
+  }
+
+  .rodape__legal {
+    display: inline-block;
+  }
+
+  .rodape__base-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+
+  .rodape__base a {
+    color: var(--texto-2);
+    transition: color 0.2s;
+  }
+
+  .rodape__base a:hover {
+    color: var(--marca-ciano);
+  }
+
+  .rodape__topo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+</style>

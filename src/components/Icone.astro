@@ -1,0 +1,44 @@
+---
+/**
+ * Ícone SVG inline. Decorativo por padrão (aria-hidden); informe "rotulo" quando o ícone
+ * transmitir informação sozinho.
+ */
+import { icones, type NomeIcone } from '../icons/icones';
+
+interface Props {
+  nome: NomeIcone | (string & {});
+  tamanho?: number;
+  espessura?: number;
+  rotulo?: string;
+  class?: string;
+}
+
+const { nome, tamanho = 24, espessura = 1.75, rotulo, class: classe } = Astro.props;
+const icone = icones[nome as NomeIcone];
+if (!icone) throw new Error(`Ícone desconhecido: "${nome}". Veja os nomes disponíveis em src/icons/icones.ts.`);
+
+const atributos =
+  icone.tipo === 'traco'
+    ? ({
+        fill: 'none',
+        stroke: 'currentColor',
+        'stroke-width': espessura,
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+      } as const)
+    : ({ fill: 'currentColor' } as const);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width={tamanho}
+  height={tamanho}
+  class:list={['icone', classe]}
+  role={rotulo ? 'img' : undefined}
+  aria-label={rotulo}
+  aria-hidden={rotulo ? undefined : 'true'}
+  focusable="false"
+  {...atributos}
+  set:html={icone.svg}
+/>

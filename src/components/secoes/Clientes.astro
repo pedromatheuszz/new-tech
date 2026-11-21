@@ -1,0 +1,295 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Icone from '../Icone.astro';
+import dados from '../../data/clientes.json';
+
+interface ClienteReal {
+  nome: string;
+  logo?: string;
+  site?: string;
+  segmento?: string;
+  cor?: string;
+  reservado?: false;
+}
+type Item = ClienteReal | { reservado: true };
+
+const itens = dados.clientes as Item[];
+
+// Logotipos em src/assets/clientes/ (otimizados no build, proporção original preservada).
+const arquivos = import.meta.glob<{ default: ImageMetadata }>('../../assets/clientes/*.{png,jpg,jpeg,webp,avif,svg}', {
+  eager: true,
+});
+const logos = new Map(Object.entries(arquivos).map(([caminho, modulo]) => [caminho.split('/').pop(), modulo.default]));
+
+const corValida = (cor?: string) => (cor && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cor) ? cor : undefined);
+const urlValida = (url?: string) => {
+  try {
+    return url && /^https?:$/.test(new URL(url).protocol) ? url : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+const clientes = itens.map((item) => {
+  if (item.reservado) return { reservado: true as const };
+  const logo = item.logo ? logos.get(item.logo) : undefined;
+  if (item.logo && !logo) console.warn(`[clientes] Logotipo não encontrado: src/assets/clientes/${item.logo}`);
+  return {
+    reservado: false as const,
+    nome: item.nome,
+    segmento: item.segmento,
+    site: urlValida(item.site),
+    cor: corValida(item.cor),
+    logo,
+  };
+});
+---
+
+<section id="clientes" class="secao clientes" aria-labelledby="clientes-titulo">
+  <div class="container">
+    <header class="secao-cabecalho secao-cabecalho--centro">
+      <p class="sobrelinha" data-revelar>Alguns clientes</p>
+      <h2 id="clientes-titulo" class="titulo-secao" data-revelar style="--atraso:1">
+        Quem confia no <span class="texto-gradiente">nosso trabalho</span>
+      </h2>
+      <p class="subtitulo-secao" data-revelar style="--atraso:2">
+        Conheça algumas marcas e empresas que fazem parte da nossa trajetória.
+      </p>
+    </header>
+
+    {
+      clientes.length > 0 ? (
+        <ul class="clientes__grade" role="list">
+          {clientes.map((cliente, i) =>
+            cliente.reservado ? (
+              <li class="cliente cliente--reservado" data-revelar="escala" style={`--atraso:${i % 3}`}>
+                <span class="cliente__logo cliente__logo--reservado">
+                  <Icone nome="image-plus" tamanho={26} />
+                </span>
+                <span class="cliente__nome">Espaço reservado</span>
+                <span class="cliente__segmento">Logotipo do cliente</span>
+              </li>
+            ) : (
+              <li
+                class="cliente card card--interativo"
+                data-brilho
+                data-revelar="escala"
+                style={`--atraso:${i % 3};${cliente.cor ? `--cor-cliente:${cliente.cor}` : ''}`}
+              >
+                {cliente.site ? (
+                  <a class="cliente__link" href={cliente.site} target="_blank" rel="noopener noreferrer">
+                    <span class="sr-only">{cliente.nome} — visitar site (abre em nova aba)</span>
+                  </a>
+                ) : null}
+                <span class="cliente__logo">
+                  {cliente.logo ? (
+                    cliente.logo.format === 'svg' ? (
+                      <img
+                        src={cliente.logo.src}
+                        alt={`Logotipo ${cliente.nome}`}
+                        width={Math.round((cliente.logo.width / cliente.logo.height) * 56)}
+                        height={56}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <Image
+                        src={cliente.logo}
+                        alt={`Logotipo ${cliente.nome}`}
+                        height={56}
+                        densities={[1, 2]}
+                        format="webp"
+                        loading="lazy"
+                      />
+                    )
+                  ) : (
+                    <span class="cliente__marca-texto">{cliente.nome}</span>
+                  )}
+                </span>
+                <span class="cliente__nome">{cliente.nome}</span>
+                {cliente.segmento && <span class="cliente__segmento">{cliente.segmento}</span>}
+              </li>
+            ),
+          )}
+        </ul>
+      ) : (
+        <div class="clientes__vazio card" data-revelar>
+          <span class="icone-moldura">
+            <Icone nome="handshake" tamanho={26} />
+          </span>
+          <h3>Cada projeto começa com uma parceria.</h3>
+          <p>
+            Em breve, apresentaremos aqui algumas das marcas e empresas que fazem parte da trajetória da New Tech.
+            Quer construir a próxima solução digital com a gente?
+          </p>
+          <a href="#contato" class="btn btn-primario">
+            Fale com a New Tech <Icone nome="arrow-right" tamanho={18} class="icone--seta" />
+          </a>
+        </div>
+      )
+    }
+
+    {
+      clientes.length > 0 && (
+        <p class="clientes__chamada" data-revelar>
+          Sua empresa pode ser a próxima.
+          <a href="#contato">
+            Vamos conversar <Icone nome="arrow-right" tamanho={16} />
+          </a>
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .clientes__grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .clientes__grade {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+
+  .cliente {
+    --cor-cliente: var(--marca-azul);
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 6px;
+    min-height: 188px;
+    padding: 28px 18px 24px;
+    text-align: center;
+    border-radius: var(--raio-lg);
+  }
+
+  /* Identidade visual individual: faixa e brilho na cor do cliente */
+  .cliente.card::after {
+    content: '';
+    position: absolute;
+    inset: 0 22% auto;
+    height: 2px;
+    border-radius: 0 0 4px 4px;
+    background: var(--cor-cliente);
+    box-shadow: 0 0 22px 2px color-mix(in srgb, var(--cor-cliente) 70%, transparent);
+    opacity: 0.85;
+  }
+
+  .cliente.card:hover {
+    border-color: color-mix(in srgb, var(--cor-cliente) 50%, transparent);
+  }
+
+  .cliente__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  .cliente__logo {
+    display: grid;
+    place-items: center;
+    height: 72px;
+    margin-bottom: 10px;
+  }
+
+  .cliente__logo :global(img) {
+    width: auto;
+    max-width: min(180px, 100%);
+    height: auto;
+    max-height: 56px;
+    object-fit: contain;
+  }
+
+  .cliente__marca-texto {
+    font-family: var(--fonte-titulo);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--texto);
+  }
+
+  .cliente__nome {
+    font-weight: 600;
+    color: var(--texto);
+  }
+
+  .cliente__segmento {
+    font-size: 0.875rem;
+    color: var(--texto-3);
+  }
+
+  /* Espaço reservado */
+  .cliente--reservado {
+    border: 1px dashed rgb(255 255 255 / 0.14);
+    background:
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.015) 0 10px, transparent 10px 20px),
+      rgb(255 255 255 / 0.01);
+  }
+
+  .cliente__logo--reservado {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+    border: 1px dashed rgb(5 189 253 / 0.35);
+    color: var(--marca-ciano);
+    background: rgb(1 138 252 / 0.06);
+  }
+
+  .cliente--reservado .cliente__nome {
+    color: var(--texto-2);
+    font-weight: 500;
+  }
+
+  /* Sem clientes cadastrados */
+  .clientes__vazio {
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: clamp(32px, 5vw, 56px);
+    text-align: center;
+  }
+
+  .clientes__vazio h3 {
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+  }
+
+  .clientes__vazio p {
+    max-width: 520px;
+    color: var(--texto-2);
+  }
+
+  .clientes__chamada {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 10px;
+    margin-top: 40px;
+    color: var(--texto-2);
+    text-align: center;
+  }
+
+  .clientes__chamada a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--link);
+    font-weight: 600;
+  }
+
+  .clientes__chamada a :global(.icone) {
+    transition: transform 0.3s var(--ease-saida);
+  }
+
+  .clientes__chamada a:hover :global(.icone) {
+    transform: translateX(3px);
+  }
+</style>

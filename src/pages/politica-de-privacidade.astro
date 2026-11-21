@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icone from '../components/Icone.astro';
+import { dadosSite, emailComercial } from '../lib/site';
+
+const { razaoSocial, cnpj } = dadosSite.empresa;
+const email = emailComercial();
+const atualizadaEm = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long', timeZone: 'UTC' }).format(
+  new Date(`${dadosSite.privacidade.atualizadaEm}T00:00:00Z`),
+);
+
+const secoes = [
+  { id: 'controlador', titulo: 'Quem é o responsável pelos dados' },
+  { id: 'dados-coletados', titulo: 'Quais dados coletamos' },
+  { id: 'finalidades', titulo: 'Para que usamos os dados' },
+  { id: 'bases-legais', titulo: 'Bases legais' },
+  { id: 'compartilhamento', titulo: 'Compartilhamento' },
+  { id: 'cookies', titulo: 'Cookies e rastreamento' },
+  { id: 'retencao', titulo: 'Por quanto tempo guardamos' },
+  { id: 'direitos', titulo: 'Seus direitos' },
+  { id: 'seguranca', titulo: 'Segurança' },
+  { id: 'alteracoes', titulo: 'Alterações desta política' },
+  { id: 'contato-privacidade', titulo: 'Contato' },
+];
+---
+
+<BaseLayout
+  titulo="Política de Privacidade | New Tech"
+  descricao="Saiba como a New Tech coleta, utiliza e protege os dados pessoais enviados pelo site, em conformidade com a LGPD."
+>
+  <article class="politica">
+    <header class="politica__topo">
+      <div class="container politica__container">
+        <a href="/" class="politica__voltar"><Icone nome="arrow-right" tamanho={16} class="politica__voltar-icone" /> Voltar ao site</a>
+        <p class="sobrelinha">Privacidade</p>
+        <h1>Política de Privacidade</h1>
+        <p class="politica__resumo">
+          Esta política explica como a New Tech coleta, utiliza e protege os dados pessoais de quem visita este site e
+          entra em contato pelo formulário, em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº
+          13.709/2018 — LGPD).
+        </p>
+        <p class="politica__data">Última atualização: {atualizadaEm}</p>
+      </div>
+    </header>
+
+    <div class="container politica__container politica__corpo">
+      <nav class="politica__indice card" aria-labelledby="indice-titulo">
+        <h2 id="indice-titulo">Nesta página</h2>
+        <ol>
+          {
+            secoes.map((secao) => (
+              <li>
+                <a href={`#${secao.id}`}>{secao.titulo}</a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <section id="controlador" aria-labelledby="controlador-t">
+        <h2 id="controlador-t">1. Quem é o responsável pelos dados</h2>
+        <p>
+          A <strong>New Tech</strong>{razaoSocial && <> ({razaoSocial}{cnpj && <>, CNPJ {cnpj}</>})</>} é a controladora
+          dos dados pessoais coletados
+          neste site, ou seja, é quem decide como e para que eles são utilizados.
+        </p>
+        <p>
+          Para qualquer assunto relacionado à privacidade e aos seus dados, utilize{' '}
+          {email ? <a href={`mailto:${email}`}>{email}</a> : <a href="/#contato">o formulário de contato deste site</a>}.
+        </p>
+      </section>
+
+      <section id="dados-coletados" aria-labelledby="dados-coletados-t">
+        <h2 id="dados-coletados-t">2. Quais dados coletamos</h2>
+        <ul>
+          <li>
+            <strong>Dados que você informa no formulário de contato:</strong> nome completo, nome da empresa (opcional),
+            e-mail, telefone ou WhatsApp, serviço de interesse e a mensagem enviada.
+          </li>
+          <li>
+            <strong>Dados técnicos de acesso:</strong> o provedor de hospedagem pode registrar automaticamente informações
+            como endereço IP, data e hora do acesso e tipo de navegador, para garantir a segurança e o funcionamento do
+            site. O endereço IP também é usado temporariamente para limitar envios repetidos do formulário.
+          </li>
+        </ul>
+        <p>Não solicitamos dados sensíveis. Pedimos que você não inclua esse tipo de informação na mensagem.</p>
+      </section>
+
+      <section id="finalidades" aria-labelledby="finalidades-t">
+        <h2 id="finalidades-t">3. Para que usamos os dados</h2>
+        <ul>
+          <li>Responder ao seu contato e esclarecer dúvidas;</li>
+          <li>Entender sua necessidade e preparar propostas ou orçamentos solicitados por você;</li>
+          <li>Manter a comunicação sobre o projeto do seu interesse;</li>
+          <li>Proteger o site e prevenir envios abusivos ou fraudulentos.</li>
+        </ul>
+        <p>Não vendemos seus dados e não os usamos para enviar publicidade sem a sua autorização.</p>
+      </section>
+
+      <section id="bases-legais" aria-labelledby="bases-legais-t">
+        <h2 id="bases-legais-t">4. Bases legais</h2>
+        <p>Tratamos seus dados com fundamento no art. 7º da LGPD:</p>
+        <ul>
+          <li>
+            <strong>Consentimento</strong> (inciso I), manifestado ao marcar a caixa de concordância antes de enviar o
+            formulário;
+          </li>
+          <li>
+            <strong>Procedimentos preliminares relacionados a contrato</strong> (inciso V), quando você solicita uma
+            proposta ou orçamento;
+          </li>
+          <li><strong>Legítimo interesse</strong> (inciso IX), para a segurança do site e a prevenção de abusos.</li>
+        </ul>
+      </section>
+
+      <section id="compartilhamento" aria-labelledby="compartilhamento-t">
+        <h2 id="compartilhamento-t">5. Compartilhamento</h2>
+        <p>
+          Seus dados podem ser tratados por fornecedores que nos ajudam a operar o site — como os serviços de hospedagem
+          e de envio de e-mail — somente para essas finalidades e com obrigações de confidencialidade e segurança. Alguns
+          desses fornecedores podem armazenar dados em servidores fora do Brasil; nesses casos, utilizamos serviços que
+          oferecem garantias adequadas de proteção, conforme a LGPD.
+        </p>
+        <p>Os dados também poderão ser compartilhados quando houver obrigação legal ou ordem de autoridade competente.</p>
+      </section>
+
+      <section id="cookies" aria-labelledby="cookies-t">
+        <h2 id="cookies-t">6. Cookies e rastreamento</h2>
+        <p>
+          Este site <strong>não utiliza cookies de publicidade, de análise ou de rastreamento</strong>. Fontes, imagens e
+          demais recursos são carregados do próprio site, sem envio de dados a terceiros. Se isso mudar, esta política
+          será atualizada e, quando necessário, pediremos o seu consentimento.
+        </p>
+        <p>
+          Os botões de WhatsApp e de redes sociais levam a serviços de terceiros, que possuem políticas de privacidade
+          próprias.
+        </p>
+      </section>
+
+      <section id="retencao" aria-labelledby="retencao-t">
+        <h2 id="retencao-t">7. Por quanto tempo guardamos</h2>
+        <p>
+          Mantemos os dados pelo tempo necessário para atender à sua solicitação e ao relacionamento que dela decorrer.
+          Sem continuidade, os dados são excluídos ou anonimizados, exceto quando a guarda for exigida por obrigação
+          legal ou para o exercício regular de direitos. Registros técnicos de segurança são mantidos por períodos
+          curtos.
+        </p>
+      </section>
+
+      <section id="direitos" aria-labelledby="direitos-t">
+        <h2 id="direitos-t">8. Seus direitos</h2>
+        <p>Nos termos do art. 18 da LGPD, você pode solicitar a qualquer momento:</p>
+        <ul>
+          <li>a confirmação de que tratamos seus dados e o acesso a eles;</li>
+          <li>a correção de dados incompletos, inexatos ou desatualizados;</li>
+          <li>a anonimização, o bloqueio ou a eliminação de dados desnecessários ou excessivos;</li>
+          <li>a portabilidade dos dados a outro fornecedor;</li>
+          <li>a eliminação dos dados tratados com base no consentimento;</li>
+          <li>informações sobre com quem compartilhamos seus dados;</li>
+          <li>informações sobre a possibilidade de não consentir e suas consequências;</li>
+          <li>a revogação do consentimento.</li>
+        </ul>
+        <p>
+          Para exercer seus direitos, entre em contato pelo canal indicado na seção{' '}
+          <a href="#contato-privacidade">Contato</a>. Você também pode apresentar reclamação à Autoridade Nacional de
+          Proteção de Dados (ANPD).
+        </p>
+      </section>
+
+      <section id="seguranca" aria-labelledby="seguranca-t">
+        <h2 id="seguranca-t">9. Segurança</h2>
+        <p>
+          Adotamos medidas técnicas e organizacionais para proteger seus dados, como conexão criptografada (HTTPS),
+          validação das informações enviadas, proteção contra envios automatizados e acesso restrito às mensagens
+          recebidas. Nenhum sistema é totalmente imune a riscos, mas trabalhamos continuamente para reduzi-los.
+        </p>
+      </section>
+
+      <section id="alteracoes" aria-labelledby="alteracoes-t">
+        <h2 id="alteracoes-t">10. Alterações desta política</h2>
+        <p>
+          Esta política pode ser atualizada para refletir melhorias no site ou mudanças na legislação. A data da última
+          atualização está indicada no início desta página.
+        </p>
+      </section>
+
+      <section id="contato-privacidade" aria-labelledby="contato-privacidade-t">
+        <h2 id="contato-privacidade-t">11. Contato</h2>
+        <p>
+          Dúvidas sobre esta política ou sobre o tratamento dos seus dados:{' '}
+          {
+            email ? (
+              <a href={`mailto:${email}`}>{email}</a>
+            ) : (
+              <a href="/#contato">formulário de contato da New Tech</a>
+            )
+          }.
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .politica__topo {
+    position: relative;
+    padding: calc(var(--altura-cabecalho) + clamp(48px, 8vw, 96px)) 0 clamp(40px, 6vw, 64px);
+    border-bottom: 1px solid var(--borda);
+    background:
+      radial-gradient(60% 80% at 80% 0%, rgb(1 55 234 / 0.25), transparent 70%),
+      var(--fundo);
+  }
+
+  .politica__container {
+    max-width: 820px;
+  }
+
+  .politica__topo .politica__container {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+
+  .politica__voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--texto-2);
+  }
+
+  .politica__voltar:hover {
+    color: var(--marca-ciano);
+  }
+
+  .politica__voltar :global(.politica__voltar-icone) {
+    transform: rotate(180deg);
+  }
+
+  .politica__topo h1 {
+    font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+    letter-spacing: -0.035em;
+  }
+
+  .politica__resumo {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--texto-2);
+  }
+
+  .politica__data {
+    font-family: var(--fonte-codigo);
+    font-size: 0.8125rem;
+    color: var(--texto-3);
+  }
+
+  .politica__corpo {
+    display: grid;
+    gap: 44px;
+    padding-block: clamp(40px, 6vw, 72px) clamp(72px, 9vw, 120px);
+    line-height: 1.8;
+    color: var(--texto-2);
+  }
+
+  .politica__indice {
+    padding: 24px 28px;
+  }
+
+  .politica__indice h2 {
+    margin-bottom: 12px;
+    font-family: var(--fonte-codigo);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--texto);
+  }
+
+  .politica__indice ol {
+    display: grid;
+    gap: 6px 24px;
+    padding-left: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .politica__indice ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .politica__indice li::marker {
+    color: var(--texto-3);
+  }
+
+  .politica__indice a {
+    color: var(--texto-2);
+  }
+
+  .politica__indice a:hover {
+    color: var(--marca-ciano);
+  }
+
+  .politica__corpo section {
+    display: grid;
+    gap: 14px;
+    scroll-margin-top: calc(var(--altura-cabecalho) + 24px);
+  }
+
+  .politica__corpo section h2 {
+    margin-bottom: 4px;
+    font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+    color: var(--texto);
+  }
+
+  .politica__corpo ul {
+    display: grid;
+    gap: 8px;
+    padding-left: 22px;
+  }
+
+  .politica__corpo li::marker {
+    color: var(--marca-ciano);
+  }
+
+  .politica__corpo strong {
+    color: var(--texto);
+    font-weight: 600;
+  }
+
+  .politica__corpo section a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

@@ -1,0 +1,18 @@
+{
+  "$instrucoes": [
+    "Clientes exibidos na seção \"Alguns clientes\". NÃO cadastre clientes sem autorização para divulgar a marca.",
+    "Cada item reservado ({ \"reservado\": true }) mostra um espaço vazio. Substitua-os pelos clientes reais:",
+    "{ \"nome\": \"Nome da empresa\", \"logo\": \"arquivo.png\", \"site\": \"https://...\", \"segmento\": \"Ramo\", \"cor\": \"#hex\" }",
+    "- logo: arquivo dentro de src/assets/clientes/ (SVG, PNG ou WebP; de preferência com fundo transparente).",
+    "- site, segmento e cor são opcionais. A cor dá a identidade visual individual do card.",
+    "Se a lista ficar vazia, o site exibe uma mensagem institucional no lugar da grade."
+  ],
+  "clientes": [
+    { "reservado": true },
+    { "reservado": true },
+    { "reservado": true },
+    { "reservado": true },
+    { "reservado": true },
+    { "reservado": true }
+  ]
+}

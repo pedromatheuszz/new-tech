@@ -1,0 +1,22 @@
+# dependências e builds
+node_modules/
+dist/
+.vercel/
+.astro/
+
+# variáveis de ambiente (nunca versionar credenciais)
+.env
+.env.*
+!.env.example
+
+# mensagens e e-mails gravados localmente durante o desenvolvimento
+.data/
+
+# configurações locais do Claude Code (pessoais)
+.claude/settings.local.json
+
+# logs e sistema
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
