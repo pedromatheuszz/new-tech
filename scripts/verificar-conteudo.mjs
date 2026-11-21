@@ -33,12 +33,14 @@ if (!site.empresa.razaoSocial || !site.empresa.cnpj) {
   pendente('src/data/site.json', 'Razão social e CNPJ (empresa) — recomendado para a Política de Privacidade');
 }
 
-// Clientes
-const reservados = clientes.clientes.filter((c) => c.reservado).length;
-if (reservados) pendente('src/data/clientes.json', `${reservados} espaço(s) reservado(s) aguardando clientes reais`);
-for (const cliente of clientes.clientes.filter((c) => !c.reservado)) {
-  if (cliente.logo && !existsSync(join(raiz, 'src/assets/clientes', cliente.logo))) {
-    pendente('src/data/clientes.json', `Logotipo não encontrado para "${cliente.nome}": src/assets/clientes/${cliente.logo}`);
+// Clientes: só verifica se a seção estiver ativa na página inicial
+if (readFileSync(join(raiz, 'src/pages/index.astro'), 'utf8').includes('<Clientes')) {
+  const reservados = clientes.clientes.filter((c) => c.reservado).length;
+  if (reservados) pendente('src/data/clientes.json', `${reservados} espaço(s) reservado(s) aguardando clientes reais`);
+  for (const cliente of clientes.clientes.filter((c) => !c.reservado)) {
+    if (cliente.logo && !existsSync(join(raiz, 'src/assets/clientes', cliente.logo))) {
+      pendente('src/data/clientes.json', `Logotipo não encontrado para "${cliente.nome}": src/assets/clientes/${cliente.logo}`);
+    }
   }
 }
 

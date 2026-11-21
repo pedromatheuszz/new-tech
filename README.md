@@ -43,7 +43,14 @@ Campos vazios **não viram links**: o site mostra "Em breve" no lugar. O botão 
 
 Em `src/data/resultados.json`, troque `"valor": null` pelo número real (ex.: `"valor": 120`). Enquanto for `null`, o card mostra "Valor a definir". A contagem progressiva roda automaticamente quando o card aparece na tela, e é desativada para quem usa "reduzir movimento".
 
-### Clientes
+### Clientes (seção desativada)
+
+A seção "Alguns clientes" está **fora do site por enquanto**. O componente (`src/components/secoes/Clientes.astro`) e os dados continuam no projeto. Para reativar:
+
+- em `src/pages/index.astro`, importe `Clientes` e coloque `<Clientes />` entre `<Servicos />` e `<Resultados />`;
+- volte o item `{ id: 'clientes', rotulo: 'Alguns clientes' }` no menu (`src/components/Cabecalho.astro`) e o link `/#clientes` no rodapé (`src/components/Rodape.astro`).
+
+Para cadastrar os clientes:
 
 1. Coloque o logotipo em `src/assets/clientes/` (SVG ou PNG com fundo transparente, de preferência na versão clara).
 2. Em `src/data/clientes.json`, substitua um item `{ "reservado": true }` por:
@@ -118,7 +125,6 @@ O `vercel.json` aplica cabeçalhos de segurança: CSP restritiva (`script-src 's
 Rode `npm run verificar` e resolva as pendências:
 
 - [ ] Números reais em `src/data/resultados.json`
-- [ ] Clientes reais (ou lista vazia) em `src/data/clientes.json`
 - [ ] E-mail, WhatsApp e redes sociais em `src/data/site.json`
 - [ ] Razão social e CNPJ (recomendado para a Política de Privacidade)
 - [ ] Variáveis de envio do formulário configuradas na hospedagem
