@@ -33,8 +33,11 @@ if (!site.empresa.razaoSocial || !site.empresa.cnpj) {
   pendente('src/data/site.json', 'Razão social e CNPJ (empresa) — recomendado para a Política de Privacidade');
 }
 
-// Clientes: só verifica se a seção estiver ativa na página inicial
-if (readFileSync(join(raiz, 'src/pages/index.astro'), 'utf8').includes('<Clientes')) {
+// Seções opcionais: só são verificadas quando estão ativas na página inicial
+const paginaInicial = readFileSync(join(raiz, 'src/pages/index.astro'), 'utf8');
+
+// Clientes
+if (paginaInicial.includes('<Clientes')) {
   const reservados = clientes.clientes.filter((c) => c.reservado).length;
   if (reservados) pendente('src/data/clientes.json', `${reservados} espaço(s) reservado(s) aguardando clientes reais`);
   for (const cliente of clientes.clientes.filter((c) => !c.reservado)) {
@@ -45,9 +48,11 @@ if (readFileSync(join(raiz, 'src/pages/index.astro'), 'utf8').includes('<Cliente
 }
 
 // Resultados
-for (const indicador of resultados.indicadores) {
-  if (typeof indicador.valor !== 'number') {
-    pendente('src/data/resultados.json', `Valor real de "${indicador.rotulo}"`);
+if (paginaInicial.includes('<Resultados')) {
+  for (const indicador of resultados.indicadores) {
+    if (typeof indicador.valor !== 'number') {
+      pendente('src/data/resultados.json', `Valor real de "${indicador.rotulo}"`);
+    }
   }
 }
 

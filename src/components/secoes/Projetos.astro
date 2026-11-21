@@ -1,5 +1,5 @@
 ---
-/** Projetos em destaque (src/data/projetos.json), exibidos abaixo dos indicadores de Resultados. */
+/** Seção "Projetos": projetos em destaque (src/data/projetos.json). */
 import Icone from '../Icone.astro';
 import dados from '../../data/projetos.json';
 
@@ -8,24 +8,20 @@ const projetos = dados.projetos;
 
 {
   projetos.length > 0 && (
-    <div class="projetos">
-      <div class="projetos__topo">
-        <div>
-          <h3 class="projetos__titulo" data-revelar>
-            Projetos em destaque
-          </h3>
-          <p class="projetos__subtitulo" data-revelar style="--atraso:1">
-            Algumas das soluções que já desenvolvemos. O código está disponível no GitHub.
-          </p>
-        </div>
-        {dados.perfilGithub && (
-          <a class="btn btn-secundario projetos__perfil" href={dados.perfilGithub} target="_blank" rel="noopener noreferrer" data-revelar>
-            <Icone nome="marca-github" tamanho={18} />
-            Ver todos no GitHub
-            <span class="sr-only">(abre em nova aba)</span>
-          </a>
-        )}
+    <section id="projetos" class="secao projetos" aria-labelledby="projetos-titulo">
+      <div class="projetos__fundo" aria-hidden="true">
+        <div class="projetos__grade-fundo" />
       </div>
+      <div class="container">
+      <header class="secao-cabecalho secao-cabecalho--centro">
+        <p class="sobrelinha" data-revelar>Projetos</p>
+        <h2 id="projetos-titulo" class="titulo-secao" data-revelar style="--atraso:1">
+          Projetos em <span class="texto-gradiente">destaque</span>
+        </h2>
+        <p class="subtitulo-secao" data-revelar style="--atraso:2">
+          Algumas das soluções que já desenvolvemos. O código está disponível no GitHub.
+        </p>
+      </header>
 
       <ul class="projetos__grade" role="list">
         {projetos.map((projeto, i) => (
@@ -39,7 +35,7 @@ const projetos = dados.projetos;
               </span>
             </div>
             <p class="projeto__categoria">{projeto.categoria}</p>
-            <h4 class="projeto__nome">{projeto.nome}</h4>
+            <h3 class="projeto__nome">{projeto.nome}</h3>
             <p class="projeto__descricao">{projeto.descricao}</p>
             <ul class="projeto__tecnologias" role="list" aria-label={`Tecnologias de ${projeto.nome}`}>
               {projeto.tecnologias.map((tecnologia) => (
@@ -63,38 +59,57 @@ const projetos = dados.projetos;
           </li>
         ))}
       </ul>
-    </div>
+
+      {dados.perfilGithub && (
+        <p class="projetos__perfil" data-revelar>
+          <a class="btn btn-secundario" href={dados.perfilGithub} target="_blank" rel="noopener noreferrer">
+            <Icone nome="marca-github" tamanho={18} />
+            Ver todos no GitHub
+            <span class="sr-only">(abre em nova aba)</span>
+          </a>
+        </p>
+      )}
+      </div>
+    </section>
   )
 }
 
 <style>
   .projetos {
-    position: relative;
-    margin-top: clamp(64px, 8vw, 96px);
+    overflow: clip;
   }
 
-  .projetos__topo {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px 32px;
-    margin-bottom: 32px;
+  .projetos__fundo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 55% at 50% 45%, rgb(1 55 234 / 0.26), transparent 70%),
+      radial-gradient(40% 40% at 80% 15%, rgb(5 189 253 / 0.1), transparent 70%);
   }
 
-  .projetos__titulo {
-    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
-    letter-spacing: -0.03em;
-  }
-
-  .projetos__subtitulo {
-    margin-top: 10px;
-    color: var(--texto-2);
+  .projetos__grade-fundo {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 30%, transparent 80%);
   }
 
   .projetos__grade {
+    position: relative;
     display: grid;
     gap: 20px;
+  }
+
+  .projetos__perfil {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
   }
 
   @media (min-width: 860px) {

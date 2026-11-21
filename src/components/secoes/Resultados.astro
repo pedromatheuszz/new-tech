@@ -1,7 +1,5 @@
 ---
-import Icone from '../Icone.astro';
-import Projetos from './Projetos.astro';
-import dados from '../../data/resultados.json';
+import Icone from '../Icone.astro';import dados from '../../data/resultados.json';
 
 interface Indicador {
   id: string;
@@ -76,8 +74,6 @@ const indicadores = (dados.indicadores as Indicador[]).map((item) => {
         ))
       }
     </dl>
-
-    <Projetos />
   </div>
 </section>
 

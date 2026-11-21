@@ -31,8 +31,8 @@ npm run dev        # http://localhost:4321
 | Contatos, WhatsApp, e-mail, redes sociais, CNPJ, URL do site, SEO | `src/data/site.json` |
 | Serviços (títulos, descrições, listas de soluções) | `src/data/servicos.json` |
 | Clientes e logotipos | `src/data/clientes.json` + imagens em `src/assets/clientes/` |
-| Números da seção Resultados | `src/data/resultados.json` |
-| Projetos em destaque (abaixo dos números) | `src/data/projetos.json` |
+| Projetos em destaque (seção Projetos) | `src/data/projetos.json` |
+| Números da seção Resultados (desativada) | `src/data/resultados.json` |
 | Textos de cada seção | `src/components/secoes/*.astro` (textos no topo de cada arquivo) |
 | Cores, fontes e espaçamentos | `src/styles/global.css` (tokens em `:root`) |
 | Opções do campo "Serviço de interesse" | `src/lib/contato/campos.js` |
@@ -40,7 +40,13 @@ npm run dev        # http://localhost:4321
 
 Campos vazios **não viram links**: o site mostra "Em breve" no lugar. O botão flutuante de WhatsApp só aparece quando `contato.whatsapp` estiver preenchido (somente números, com DDI e DDD, por exemplo `5511912345678`).
 
-### Resultados (números)
+### Projetos
+
+A seção "Projetos" mostra os projetos de `src/data/projetos.json` com links para o GitHub (e para o site, quando existe). Deixe a lista vazia para esconder a seção.
+
+### Resultados (seção desativada)
+
+A seção de números está **fora do site por enquanto**. Para reativar: importe `Resultados` em `src/pages/index.astro` e coloque `<Resultados />` antes de `<Contato />`; volte `{ id: 'resultados', rotulo: 'Resultados' }` ao menu (`src/components/Cabecalho.astro`) e `/#resultados` ao rodapé (`src/components/Rodape.astro`).
 
 Em `src/data/resultados.json`, troque `"valor": null` pelo número real (ex.: `"valor": 120`). Enquanto for `null`, o card mostra "Valor a definir". A contagem progressiva roda automaticamente quando o card aparece na tela, e é desativada para quem usa "reduzir movimento".
 
@@ -48,7 +54,7 @@ Em `src/data/resultados.json`, troque `"valor": null` pelo número real (ex.: `"
 
 A seção "Alguns clientes" está **fora do site por enquanto**. O componente (`src/components/secoes/Clientes.astro`) e os dados continuam no projeto. Para reativar:
 
-- em `src/pages/index.astro`, importe `Clientes` e coloque `<Clientes />` entre `<Servicos />` e `<Resultados />`;
+- em `src/pages/index.astro`, importe `Clientes` e coloque `<Clientes />` entre `<Servicos />` e `<Projetos />`;
 - volte o item `{ id: 'clientes', rotulo: 'Alguns clientes' }` no menu (`src/components/Cabecalho.astro`) e o link `/#clientes` no rodapé (`src/components/Rodape.astro`).
 
 Para cadastrar os clientes:
@@ -125,7 +131,6 @@ O `vercel.json` aplica cabeçalhos de segurança: CSP restritiva (`script-src 's
 
 Rode `npm run verificar` e resolva as pendências:
 
-- [ ] Números reais em `src/data/resultados.json`
 - [ ] E-mail, WhatsApp e redes sociais em `src/data/site.json`
 - [ ] Razão social e CNPJ (recomendado para a Política de Privacidade)
 - [ ] Variáveis de envio do formulário configuradas na hospedagem
