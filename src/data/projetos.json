@@ -1,0 +1,51 @@
+{
+  "$instrucoes": [
+    "Projetos em destaque exibidos na seção Resultados (abaixo dos indicadores).",
+    "\"tipo\": selo do card (ex.: \"Solução digital\" ou \"Projeto pessoal\"). \"icone\": nome em src/icons/icones.ts.",
+    "\"github\": link do repositório. \"site\": link do projeto no ar (opcional). \"tecnologias\": lista curta.",
+    "Para esconder o bloco, deixe a lista \"projetos\" vazia."
+  ],
+  "perfilGithub": "https://github.com/pedromatheuszz",
+  "projetos": [
+    {
+      "nome": "Karolyne Beauty",
+      "tipo": "Solução digital",
+      "categoria": "Sistema de gestão",
+      "descricao": "Sistema de gestão para um espaço de massoterapia e estética em Joinville/SC, com dados salvos localmente e sincronização opcional em nuvem para backup e uso em outro dispositivo.",
+      "icone": "layout-dashboard",
+      "tecnologias": ["React", "Vite", "Tailwind CSS", "SQLite", "Supabase"],
+      "github": "https://github.com/pedromatheuszz/karolyne-beauty",
+      "site": ""
+    },
+    {
+      "nome": "Mural das Empreendedoras",
+      "tipo": "Solução digital",
+      "categoria": "Aplicativo Android e iOS",
+      "descricao": "Aplicativo para conectar, divulgar e dar visibilidade a mulheres empreendedoras: cada uma cria o perfil da sua marca, publica no Mural e passa a ser encontrada por clientes e parceiros.",
+      "icone": "smartphone",
+      "tecnologias": ["React Native", "Expo", "TypeScript", "PostgreSQL"],
+      "github": "https://github.com/pedromatheuszz/mural-das-empreendedoras",
+      "site": ""
+    },
+    {
+      "nome": "Routine",
+      "tipo": "Projeto pessoal",
+      "categoria": "Aplicativo de produtividade",
+      "descricao": "Aplicativo de organização pessoal que reúne a rotina diária de hábitos e a agenda de compromissos e reuniões, com versão para Windows.",
+      "icone": "clock",
+      "tecnologias": ["Python", "Flask", "MongoDB", "JavaScript"],
+      "github": "https://github.com/pedromatheuszz/Routine",
+      "site": ""
+    },
+    {
+      "nome": "Universal Prensados",
+      "tipo": "Projeto pessoal",
+      "categoria": "Site de pedidos e app de gestão",
+      "descricao": "Site de pedidos de uma lanchonete em Joinville/SC — cardápio, carrinho, checkout e acompanhamento do pedido — integrado a um app de gestão para Windows com pedidos em tempo real, caixa e financeiro.",
+      "icone": "store",
+      "tecnologias": ["JavaScript", "Vite", "Electron", "PostgreSQL"],
+      "github": "https://github.com/pedromatheuszz/universal-prensados",
+      "site": "https://universal-prensados.vercel.app"
+    }
+  ]
+}

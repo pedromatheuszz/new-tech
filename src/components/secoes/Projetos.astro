@@ -1,0 +1,199 @@
+---
+/** Projetos em destaque (src/data/projetos.json), exibidos abaixo dos indicadores de Resultados. */
+import Icone from '../Icone.astro';
+import dados from '../../data/projetos.json';
+
+const projetos = dados.projetos;
+---
+
+{
+  projetos.length > 0 && (
+    <div class="projetos">
+      <div class="projetos__topo">
+        <div>
+          <h3 class="projetos__titulo" data-revelar>
+            Projetos em destaque
+          </h3>
+          <p class="projetos__subtitulo" data-revelar style="--atraso:1">
+            Algumas das soluções que já desenvolvemos. O código está disponível no GitHub.
+          </p>
+        </div>
+        {dados.perfilGithub && (
+          <a class="btn btn-secundario projetos__perfil" href={dados.perfilGithub} target="_blank" rel="noopener noreferrer" data-revelar>
+            <Icone nome="marca-github" tamanho={18} />
+            Ver todos no GitHub
+            <span class="sr-only">(abre em nova aba)</span>
+          </a>
+        )}
+      </div>
+
+      <ul class="projetos__grade" role="list">
+        {projetos.map((projeto, i) => (
+          <li class="projeto card card--interativo" data-brilho data-revelar style={`--atraso:${i % 2}`}>
+            <div class="projeto__topo">
+              <span class="icone-moldura">
+                <Icone nome={projeto.icone} tamanho={22} />
+              </span>
+              <span class:list={['projeto__tipo', { 'projeto__tipo--pessoal': projeto.tipo === 'Projeto pessoal' }]}>
+                {projeto.tipo}
+              </span>
+            </div>
+            <p class="projeto__categoria">{projeto.categoria}</p>
+            <h4 class="projeto__nome">{projeto.nome}</h4>
+            <p class="projeto__descricao">{projeto.descricao}</p>
+            <ul class="projeto__tecnologias" role="list" aria-label={`Tecnologias de ${projeto.nome}`}>
+              {projeto.tecnologias.map((tecnologia) => (
+                <li>{tecnologia}</li>
+              ))}
+            </ul>
+            <div class="projeto__links">
+              <a href={projeto.github} target="_blank" rel="noopener noreferrer">
+                <Icone nome="marca-github" tamanho={16} />
+                Código no GitHub
+                <span class="sr-only">: {projeto.nome} (abre em nova aba)</span>
+              </a>
+              {projeto.site && (
+                <a href={projeto.site} target="_blank" rel="noopener noreferrer">
+                  <Icone nome="arrow-up-right" tamanho={16} />
+                  Ver site
+                  <span class="sr-only">: {projeto.nome} (abre em nova aba)</span>
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .projetos {
+    position: relative;
+    margin-top: clamp(64px, 8vw, 96px);
+  }
+
+  .projetos__topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px 32px;
+    margin-bottom: 32px;
+  }
+
+  .projetos__titulo {
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+    letter-spacing: -0.03em;
+  }
+
+  .projetos__subtitulo {
+    margin-top: 10px;
+    color: var(--texto-2);
+  }
+
+  .projetos__grade {
+    display: grid;
+    gap: 20px;
+  }
+
+  @media (min-width: 860px) {
+    .projetos__grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .projeto {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: clamp(24px, 3vw, 32px);
+    background: linear-gradient(180deg, rgb(10 14 26 / 0.85), rgb(6 8 15 / 0.85));
+  }
+
+  .projeto__topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .projeto__tipo {
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgb(5 189 253 / 0.35);
+    background: rgb(1 138 252 / 0.1);
+    color: #d6ebff;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .projeto__tipo--pessoal {
+    border-color: var(--borda-forte);
+    background: rgb(255 255 255 / 0.04);
+    color: var(--texto-2);
+  }
+
+  .projeto__categoria {
+    font-family: var(--fonte-codigo);
+    font-size: 0.8125rem;
+    color: var(--marca-ciano);
+  }
+
+  .projeto__nome {
+    font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+    letter-spacing: -0.02em;
+  }
+
+  .projeto__descricao {
+    color: var(--texto-2);
+    line-height: 1.7;
+  }
+
+  .projeto__tecnologias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .projeto__tecnologias li {
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: rgb(255 255 255 / 0.05);
+    font-family: var(--fonte-codigo);
+    font-size: 0.75rem;
+    color: var(--texto-2);
+  }
+
+  .projeto__links {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--borda);
+  }
+
+  .projeto__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--link);
+    transition: color 0.2s;
+  }
+
+  .projeto__links a:hover {
+    color: var(--marca-ciano);
+  }
+
+  .projetos__perfil :global(.icone) {
+    color: var(--texto);
+  }
+</style>

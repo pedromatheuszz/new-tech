@@ -32,6 +32,7 @@ npm run dev        # http://localhost:4321
 | Serviços (títulos, descrições, listas de soluções) | `src/data/servicos.json` |
 | Clientes e logotipos | `src/data/clientes.json` + imagens em `src/assets/clientes/` |
 | Números da seção Resultados | `src/data/resultados.json` |
+| Projetos em destaque (abaixo dos números) | `src/data/projetos.json` |
 | Textos de cada seção | `src/components/secoes/*.astro` (textos no topo de cada arquivo) |
 | Cores, fontes e espaçamentos | `src/styles/global.css` (tokens em `:root`) |
 | Opções do campo "Serviço de interesse" | `src/lib/contato/campos.js` |
