@@ -27,8 +27,6 @@ if (!site.url && !process.env.SITE_URL && !process.env.VERCEL_PROJECT_PRODUCTION
 if (!site.contato.email) pendente('src/data/site.json', 'E-mail comercial (contato.email)');
 if (!site.contato.whatsapp) pendente('src/data/site.json', 'WhatsApp oficial (contato.whatsapp) — ativa o botão flutuante');
 if (!site.redes.instagram) pendente('src/data/site.json', 'Instagram (redes.instagram)');
-const outrasRedes = Object.entries(site.redes).filter(([chave, valor]) => !chave.startsWith('$') && chave !== 'instagram' && valor);
-if (!outrasRedes.length) pendente('src/data/site.json', 'Outras redes sociais (redes.linkedin, redes.tiktok...) — opcional');
 if (!site.empresa.razaoSocial || !site.empresa.cnpj) {
   pendente('src/data/site.json', 'Razão social e CNPJ (empresa) — recomendado para a Política de Privacidade');
 }

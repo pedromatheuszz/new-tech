@@ -69,15 +69,15 @@ const canais = [
             </li>
           ))
         }
-        <li data-revelar style="--atraso:3">
-          <div class="canal">
-            <span class="canal__icone">
-              <Icone nome="share-2" tamanho={20} />
-            </span>
-            <span class="canal__textos">
-              <span class="canal__titulo">Outras redes sociais</span>
-              {
-                outrasRedes.length > 0 ? (
+        {
+          outrasRedes.length > 0 && (
+            <li data-revelar style="--atraso:3">
+              <div class="canal">
+                <span class="canal__icone">
+                  <Icone nome="share-2" tamanho={20} />
+                </span>
+                <span class="canal__textos">
+                  <span class="canal__titulo">Outras redes sociais</span>
                   <span class="canal__redes">
                     {outrasRedes.map((rede) => (
                       <a href={rede.url} target="_blank" rel="noopener noreferrer" aria-label={`${rede.nome} (abre em nova aba)`}>
@@ -85,13 +85,11 @@ const canais = [
                       </a>
                     ))}
                   </span>
-                ) : (
-                  <span class="canal__valor canal__valor--em-breve">Em breve</span>
-                )
-              }
-            </span>
-          </div>
-        </li>
+                </span>
+              </div>
+            </li>
+          )
+        }
       </ul>
 
       <p class="contato__privacidade" data-revelar>

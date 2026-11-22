@@ -1,7 +1,7 @@
 {
   "$instrucoes": "Dados gerais da New Tech. Campos vazios (\"\") não geram links: o site mostra \"Em breve\" no lugar. Preencha com dados reais antes de publicar e rode `npm run verificar`.",
   "nome": "New Tech",
-  "url": "",
+  "url": "https://nt-newtech.vercel.app",
   "descricaoCurta": "Empresa de tecnologia e inovação especializada em desenvolvimento de softwares, aplicativos, sites profissionais e edição de vídeos.",
   "seo": {
     "titulo": "New Tech | Software, aplicativos e sites para empresas",
@@ -11,14 +11,14 @@
   },
   "contato": {
     "$instrucoes": "whatsapp: somente números com DDI e DDD (ex.: 5511912345678). email: e-mail comercial. telefone: opcional, exibido como texto.",
-    "whatsapp": "",
+    "whatsapp": "5547996482391",
     "whatsappMensagem": "Olá! Vim pelo site da New Tech e gostaria de conversar sobre um projeto.",
-    "email": "",
+    "email": "nt.newtechoficial@gmail.com",
     "telefone": ""
   },
   "redes": {
     "$instrucoes": "Use o endereço completo do perfil (ex.: https://www.instagram.com/newtech). Deixe vazio o que não existir.",
-    "instagram": "",
+    "instagram": "https://www.instagram.com/nt.newtech_/",
     "linkedin": "",
     "tiktok": "",
     "youtube": "",
